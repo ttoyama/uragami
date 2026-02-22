@@ -1,0 +1,123 @@
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #faf8f5;
+    --sheet-bg: #ffffff;
+    --text: #333333;
+    --sheet-shadow: rgba(0, 0, 0, 0.06);
+    --edge-shadow: rgba(0, 0, 0, 0.1);
+    --indicator-inactive: rgba(0, 0, 0, 0.15);
+    --indicator-active: rgba(0, 0, 0, 0.45);
+    --scrollbar-thumb: rgba(0, 0, 0, 0.12);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #1c1c1e;
+        --sheet-bg: #2c2c2e;
+        --text: #e5e5e7;
+        --sheet-shadow: rgba(0, 0, 0, 0.3);
+        --edge-shadow: rgba(0, 0, 0, 0.4);
+        --indicator-inactive: rgba(255, 255, 255, 0.2);
+        --indicator-active: rgba(255, 255, 255, 0.55);
+        --scrollbar-thumb: rgba(255, 255, 255, 0.12);
+    }
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+    background: var(--bg);
+    font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-serif;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+#sheets-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.sheet {
+    position: absolute;
+    top: 28px;
+    left: 0;
+    right: 0;
+    bottom: 28px;
+    padding: 0 24px;
+    will-change: transform;
+}
+
+.sheet-inner {
+    width: 100%;
+    height: 100%;
+    background: var(--sheet-bg);
+    border-radius: 3px;
+    box-shadow:
+        0 1px 3px var(--sheet-shadow),
+        -1px 0 1px var(--edge-shadow),
+        1px 0 1px var(--edge-shadow);
+    overflow: hidden;
+}
+
+.sheet textarea {
+    width: 100%;
+    height: 100%;
+    padding: 16px 24px;
+    border: none;
+    outline: none;
+    resize: none;
+    background: transparent;
+    color: var(--text);
+    font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-serif;
+    font-size: 16px;
+    line-height: 1.9;
+    letter-spacing: 0.04em;
+    -webkit-user-select: text;
+    user-select: text;
+}
+
+.sheet textarea::placeholder {
+    color: transparent;
+}
+
+.sheet textarea::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sheet textarea::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sheet textarea::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: 3px;
+}
+
+#indicator {
+    position: fixed;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 100;
+}
+
+.dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--indicator-inactive);
+    transition: background 0.3s ease;
+}
+
+.dot.active {
+    background: var(--indicator-active);
+}
