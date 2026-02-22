@@ -1,8 +1,8 @@
 const { invoke } = window.__TAURI__.core;
 
-const SHEET_COUNT = 5;
-const EDGE_WIDTH = 6;
-const MARGIN = 24;
+const SHEET_COUNT = 3;
+const EDGE_WIDTH = 14;
+const MARGIN = 28;
 const SWIPE_THRESHOLD = 50;
 const SAVE_DEBOUNCE_MS = 1000;
 const SWITCH_COOLDOWN_MS = 500;
@@ -37,32 +37,19 @@ async function init() {
         sheets.push({ el: sheetEl, textarea });
     }
 
-    createIndicator();
     updatePositions(false);
     sheets[currentIndex].textarea.focus();
 
     document.addEventListener('wheel', onWheel, { passive: false });
 
+    const hint = document.getElementById('hint');
+    setTimeout(() => hint.classList.add('fade-out'), 4000);
+    setTimeout(() => hint.remove(), 5000);
+
     document.addEventListener('keydown', (e) => {
         if ((e.metaKey || e.ctrlKey) && e.key === 's') {
             e.preventDefault();
         }
-    });
-}
-
-function createIndicator() {
-    const indicator = document.getElementById('indicator');
-    for (let i = 0; i < SHEET_COUNT; i++) {
-        const dot = document.createElement('div');
-        dot.className = 'dot';
-        if (i === currentIndex) dot.classList.add('active');
-        indicator.appendChild(dot);
-    }
-}
-
-function updateIndicator() {
-    document.querySelectorAll('.dot').forEach((dot, i) => {
-        dot.classList.toggle('active', i === currentIndex);
     });
 }
 
@@ -73,16 +60,21 @@ function updatePositions(animate) {
             : 'none';
 
         if (i < currentIndex) {
-            const peek = (i + 1) * EDGE_WIDTH;
-            el.style.transform = `translateX(calc(-100% + ${peek + MARGIN}px))`;
+            // 下にある紙: 左上にずらして端を見せる
+            const distance = currentIndex - i;
+            el.style.transform = `translate(-${distance * EDGE_WIDTH}px, -${distance * 10}px)`;
             el.style.zIndex = i + 1;
+            el.classList.remove('current');
         } else if (i === currentIndex) {
             el.style.transform = 'translateX(0)';
             el.style.zIndex = 10;
+            el.classList.add('current');
         } else {
+            // まだめくっていない紙: 右端にピークだけ見せる
             const peek = (SHEET_COUNT - i) * EDGE_WIDTH;
             el.style.transform = `translateX(calc(100% - ${peek + MARGIN}px))`;
             el.style.zIndex = SHEET_COUNT - i;
+            el.classList.remove('current');
         }
     });
 }
@@ -96,7 +88,6 @@ function switchTo(index) {
     isAnimating = true;
 
     updatePositions(true);
-    updateIndicator();
 
     setTimeout(() => {
         isAnimating = false;

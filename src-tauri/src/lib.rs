@@ -1,7 +1,7 @@
 use std::fs;
 use std::path::PathBuf;
 
-const SHEET_COUNT: usize = 5;
+const SHEET_COUNT: usize = 3;
 
 fn data_dir() -> PathBuf {
     dirs::home_dir()

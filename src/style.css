@@ -6,10 +6,10 @@
 
 :root {
     --bg: #faf8f5;
-    --sheet-bg: #ffffff;
+    --sheet-bg: #f4f1ea;
     --text: #333333;
-    --sheet-shadow: rgba(0, 0, 0, 0.06);
-    --edge-shadow: rgba(0, 0, 0, 0.1);
+    --sheet-shadow: rgba(0, 0, 0, 0.12);
+    --edge-shadow: rgba(0, 0, 0, 0.18);
     --indicator-inactive: rgba(0, 0, 0, 0.15);
     --indicator-active: rgba(0, 0, 0, 0.45);
     --scrollbar-thumb: rgba(0, 0, 0, 0.12);
@@ -37,6 +37,16 @@ html, body {
     user-select: none;
 }
 
+#titlebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 28px;
+    z-index: 50;
+    -webkit-app-region: drag;
+}
+
 #sheets-container {
     position: relative;
     width: 100%;
@@ -50,23 +60,75 @@ html, body {
     left: 0;
     right: 0;
     bottom: 28px;
-    padding: 0 24px;
+    padding: 0 28px;
     will-change: transform;
 }
 
 .sheet-inner {
+    position: relative;
     width: 100%;
     height: 100%;
     background: var(--sheet-bg);
-    border-radius: 3px;
+    border-radius: 4px;
     box-shadow:
-        0 1px 3px var(--sheet-shadow),
-        -1px 0 1px var(--edge-shadow),
-        1px 0 1px var(--edge-shadow);
+        0 1px 4px var(--sheet-shadow),
+        0 0 1px var(--edge-shadow);
     overflow: hidden;
 }
 
+/* 裏面の広告・印刷が透けている表現 */
+.sheet-inner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* 1枚目: スーパーのチラシ裏。赤・黄の派手な広告が透ける */
+.sheet:nth-child(1) .sheet-inner::before {
+    background:
+        radial-gradient(ellipse 70% 20% at 55% 8%, rgba(210, 40, 30, 0.07) 0%, transparent 100%),
+        radial-gradient(ellipse 25% 35% at 10% 40%, rgba(230, 180, 20, 0.06) 0%, transparent 100%),
+        radial-gradient(ellipse 50% 15% at 80% 50%, rgba(210, 40, 30, 0.04) 0%, transparent 100%),
+        radial-gradient(ellipse 40% 20% at 35% 85%, rgba(240, 150, 30, 0.05) 0%, transparent 100%),
+        radial-gradient(ellipse 15% 10% at 70% 30%, rgba(80, 80, 80, 0.04) 0%, transparent 100%),
+        repeating-linear-gradient(0deg, transparent 0px, transparent 12px, rgba(50, 50, 50, 0.02) 12px, rgba(50, 50, 50, 0.02) 13px);
+}
+
+/* 2枚目: 不動産広告の裏。青・緑の落ち着いた色と間取り図的な線 */
+.sheet:nth-child(2) .sheet-inner::before {
+    background:
+        radial-gradient(ellipse 55% 40% at 70% 25%, rgba(30, 80, 150, 0.06) 0%, transparent 100%),
+        radial-gradient(ellipse 30% 30% at 20% 65%, rgba(40, 130, 80, 0.05) 0%, transparent 100%),
+        radial-gradient(ellipse 80% 8% at 50% 50%, rgba(30, 80, 150, 0.03) 0%, transparent 100%),
+        linear-gradient(90deg, transparent 20%, rgba(60, 60, 60, 0.015) 20.3%, rgba(60, 60, 60, 0.015) 20.6%, transparent 20.9%),
+        linear-gradient(90deg, transparent 55%, rgba(60, 60, 60, 0.015) 55.3%, rgba(60, 60, 60, 0.015) 55.6%, transparent 55.9%),
+        linear-gradient(0deg, transparent 35%, rgba(60, 60, 60, 0.015) 35.2%, rgba(60, 60, 60, 0.015) 35.5%, transparent 35.8%),
+        repeating-linear-gradient(0deg, transparent 0px, transparent 22px, rgba(50, 50, 50, 0.015) 22px, rgba(50, 50, 50, 0.015) 23px);
+}
+
+/* 3枚目: 塾・習い事のチラシ裏。ピンク・紫とイラスト的なまるい形 */
+.sheet:nth-child(3) .sheet-inner::before {
+    background:
+        radial-gradient(circle 18% at 25% 20%, rgba(200, 60, 130, 0.06) 0%, transparent 100%),
+        radial-gradient(circle 12% at 70% 70%, rgba(130, 60, 180, 0.05) 0%, transparent 100%),
+        radial-gradient(ellipse 60% 15% at 50% 10%, rgba(200, 60, 130, 0.04) 0%, transparent 100%),
+        radial-gradient(circle 8% at 80% 25%, rgba(240, 170, 60, 0.05) 0%, transparent 100%),
+        radial-gradient(ellipse 35% 25% at 40% 55%, rgba(130, 60, 180, 0.03) 0%, transparent 100%),
+        repeating-linear-gradient(0deg, transparent 0px, transparent 16px, rgba(50, 50, 50, 0.018) 16px, rgba(50, 50, 50, 0.018) 17px);
+}
+
+.sheet.current .sheet-inner {
+    box-shadow:
+        0 4px 16px var(--sheet-shadow),
+        0 0 1px var(--edge-shadow);
+}
+
 .sheet textarea {
+    position: relative;
+    z-index: 1;
     width: 100%;
     height: 100%;
     padding: 16px 24px;
@@ -76,8 +138,8 @@ html, body {
     background: transparent;
     color: var(--text);
     font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", sans-serif;
-    font-size: 16px;
-    line-height: 1.9;
+    font-size: 14px;
+    line-height: 1.6;
     letter-spacing: 0.04em;
     -webkit-user-select: text;
     user-select: text;
@@ -100,24 +162,20 @@ html, body {
     border-radius: 3px;
 }
 
-#indicator {
+#hint {
     position: fixed;
-    bottom: 8px;
+    bottom: 14px;
     left: 50%;
     transform: translateX(-50%);
-    display: flex;
-    gap: 8px;
+    font-size: 12px;
+    color: var(--indicator-active);
+    opacity: 1;
+    transition: opacity 1s ease;
     z-index: 100;
+    pointer-events: none;
 }
 
-.dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--indicator-inactive);
-    transition: background 0.3s ease;
+#hint.fade-out {
+    opacity: 0;
 }
 
-.dot.active {
-    background: var(--indicator-active);
-}
