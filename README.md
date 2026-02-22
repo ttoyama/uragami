@@ -22,10 +22,16 @@ This app captures that feeling. Three sheets of scrap paper. Swipe to flip betwe
 
 Download the `.dmg` from [Releases](../../releases).
 
+> **macOS Gatekeeper note:** This app is not code-signed. After copying to Applications, run:
+>
+> ```sh
+> xattr -cr /Applications/uragami.app
+> ```
+
 Or build from source:
 
 ```sh
-git clone https://github.com/yourname/uragami.git
+git clone https://github.com/ttoyama/uragami.git
 cd uragami
 npm install
 npm run build
