@@ -60,7 +60,7 @@ function updatePositions(animate) {
             : 'none';
 
         if (i < currentIndex) {
-            // 下にある紙: 左上にずらして端を見せる
+            // Sheets underneath: offset up-left to reveal edges
             const distance = currentIndex - i;
             el.style.transform = `translate(-${distance * EDGE_WIDTH}px, -${distance * 10}px)`;
             el.style.zIndex = i + 1;
@@ -70,7 +70,7 @@ function updatePositions(animate) {
             el.style.zIndex = 10;
             el.classList.add('current');
         } else {
-            // まだめくっていない紙: 右端にピークだけ見せる
+            // Sheets not yet flipped: peek from right edge
             const peek = (SHEET_COUNT - i) * EDGE_WIDTH;
             el.style.transform = `translateX(calc(100% - ${peek + MARGIN}px))`;
             el.style.zIndex = SHEET_COUNT - i;
