@@ -6,7 +6,7 @@ In Japan, **裏紙** (uragami) means the blank back side of used paper — old f
 
 This app captures that feeling. Three sheets of scrap paper. Swipe to flip between them. Everything auto-saves. No file dialogs, no Cmd+S, no friction.
 
-![screenshot](https://github.com/user-attachments/assets/placeholder.png)
+![screenshot](screenshot.png)
 
 ## Features
 
