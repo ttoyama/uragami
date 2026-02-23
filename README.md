@@ -60,6 +60,10 @@ Sheets are stored as plain text files:
 └── sheet_3.txt
 ```
 
+## Support
+
+If you find this useful, [buy me a coffee](https://buy.stripe.com/7sY4gAbWKeEv4b0bfO2Fa00).
+
 ## License
 
 MIT
